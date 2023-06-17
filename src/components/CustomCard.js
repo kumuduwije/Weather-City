@@ -34,6 +34,7 @@ function CustomCard() {
                     .get(url)
                     .then((response) => {
                         const fetchedData = response.data;
+                        console.log(response.data)
                         const currentTime = formatDate(fetchedData.timezone);
 
                         fetchedData.currentTime = currentTime;
@@ -209,11 +210,13 @@ function CustomCard() {
                                         <h3>{card.name + ", " + card.sys.country}</h3>
                                         <p className={"time-para"}>{card.currentTime}</p>
                                         <span className={"current-status"}>
-                                              <FontAwesomeIcon
-                                                  icon={faCloud}
-                                                  style={{color: "#fffff"}}
-                                                  size={"lg"}
-                                              />
+                                              {/*<FontAwesomeIcon*/}
+                                              {/*    icon={faCloud}*/}
+                                              {/*    style={{color: "#fffff"}}*/}
+                                              {/*    size={"lg"}*/}
+                                              {/*/>*/}
+
+                                            {card.weather && <img src={`https://openweathermap.org/img/wn/${card.weather[0].icon}.png`} alt=""/>}
                                             {card.weather && <p>{card.weather[0].description}</p>}
                                        </span>
                                     </div>
