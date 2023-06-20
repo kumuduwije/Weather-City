@@ -7,12 +7,15 @@ import InputBox from "./InputBox";
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import PopUp from "./PopUp"
+
 
 
 function CustomCard() {
      // const [weatherData, setWeatherData] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [popUpOpen, setPopUpOpen] = useState(false);
 
     // state handle for weather data cards. Retrieve and load if their any locally saved data.
     const [weatherData, setWeatherData] = useState(() => {
@@ -67,6 +70,7 @@ function CustomCard() {
 
         }
     };
+
 
 
 
@@ -156,6 +160,11 @@ function CustomCard() {
         return sunriseTime.toLocaleTimeString("en-US", options);
     };
 
+    const handleClick = () => {
+        setPopUpOpen(true);
+        console.log(popUpOpen)
+    };
+
 
 
     return (
@@ -178,7 +187,9 @@ function CustomCard() {
 
 
                 {isLoading ? (
+
                     <CircularProgress className ={"centered-circular"} color="inherit" />
+
                 ) : (
                     <>
                         {weatherData.length === 0 && (
@@ -196,7 +207,7 @@ function CustomCard() {
                                 {weatherData.map((card, index) => (
                                     <div key={index} className="main-card">
                                         <div className={"middle-visible-section"}>
-                                            <Button variant="outlined"  sx={{
+                                            <Button onClick={handleClick} variant="outlined" sx={{
                                                 '&:hover': {
                                                     backgroundColor: '#8d1f4f',
                                                     border: '1px solid',
@@ -208,7 +219,10 @@ function CustomCard() {
                                                 color: 'lightgray',
                                                 border: '2px solid lightgray',
                                                 textTransform:'uppercase'
-                                            }}>{card.name} ForeCast Info</Button>
+                                            }
+
+                                            }>{card.name} ForeCast Info</Button>
+
                                         </div>
 
                                         <div className="card-close-btn">
@@ -300,8 +314,11 @@ function CustomCard() {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
+
                                 ))}
+                                {popUpOpen && <PopUp />}
                             </div>
                         </div>
                     </>
