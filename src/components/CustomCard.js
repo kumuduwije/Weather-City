@@ -1,21 +1,36 @@
 import './CustomCard.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCloud, faPaperPlane, faXmark} from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faXmark} from "@fortawesome/free-solid-svg-icons";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import InputBox from "./InputBox";
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 function CustomCard() {
-    // const [weatherData, setWeatherData] = useState([]);
+     // const [weatherData, setWeatherData] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     // state handle for weather data cards. Retrieve and load if their any locally saved data.
     const [weatherData, setWeatherData] = useState(() => {
         const storedData = localStorage.getItem("WEATHER-DATA");
         return JSON.parse(storedData) || [];
     });
+
+    useEffect(() => {
+        const fetchData = setTimeout(() => {
+            const storedData = localStorage.getItem('WEATHER-DATA');
+            setWeatherData(JSON.parse(storedData) || []);
+            setIsLoading(false);
+        }, 2000);
+
+        return () => clearTimeout(fetchData);
+    }, []);
+
+
     // search location state
     const [location, setLocation] = useState("");
 
@@ -159,133 +174,140 @@ function CustomCard() {
                     </div>
             ) : null}
 
-
-
             <section>
 
 
-                {/*Add Title if there is no cards*/}
-                {weatherData.length === 0 &&(
-                    <div className="centered-container">
-                        <p className="centered-text">You haven't added any city yet, Add cities! </p>
+                {isLoading ? (
+                    <CircularProgress className ={"centered-circular"} color="inherit" />
+                ) : (
+                    <>
+                        {weatherData.length === 0 && (
+                            <div className="centered-container">
+                                {/*Add Title if there are no cards*/}
+                                <p className="centered-text">You haven't added any city yet. Add cities!</p>
+                            </div>
+                        )}
+                        {/* Render the rest of your component */}
 
-                    </div>
 
-                )}
 
-                <div className={"container"}>
-                    <div className={"cards"}>
-                        {weatherData.map((card, index) => (
-                            <div key={index} className="main-card">
-                                <div className={"middle-visible-section"}>
-                                    <Button variant="outlined"  sx={{
-                                        '&:hover': {
-                                            backgroundColor: '#8d1f4f',
-                                            border: '1px solid',
-                                            borderColor: (theme) => '#8d1f4f',
-                                            color: (theme) => 'azure',
-                                        },
+                        <div className={"container"}>
+                            <div className={"cards"}>
+                                {weatherData.map((card, index) => (
+                                    <div key={index} className="main-card">
+                                        <div className={"middle-visible-section"}>
+                                            <Button variant="outlined"  sx={{
+                                                '&:hover': {
+                                                    backgroundColor: '#8d1f4f',
+                                                    border: '1px solid',
+                                                    borderColor: (theme) => '#8d1f4f',
+                                                    color: (theme) => 'azure',
+                                                },
 
-                                    borderColor:'#8d1f4f',
-                                    color: 'lightgray',
-                                    border: '2px solid lightgray',
-                                    textTransform:'uppercase'
-                                    }}>{card.name} ForeCast Info</Button>
-                                </div>
+                                                borderColor:'#8d1f4f',
+                                                color: 'lightgray',
+                                                border: '2px solid lightgray',
+                                                textTransform:'uppercase'
+                                            }}>{card.name} ForeCast Info</Button>
+                                        </div>
 
-                                <div className="card-close-btn">
-                                    {/*<CloseIcon/>*/}
-                                    <FontAwesomeIcon
-                                        icon={faXmark}
-                                        // style={{color: "#fffff"}}
-                                        size={"md"}
-                                        className = "close-btn"
-                                        onClick={() => handleDeleteCard(card.id)}
-                                    />
-                                </div>
+                                        <div className="card-close-btn">
+                                            {/*<CloseIcon/>*/}
+                                            <FontAwesomeIcon
+                                                icon={faXmark}
+                                                // style={{color: "#fffff"}}
+                                                size={"md"}
+                                                className = "close-btn"
+                                                onClick={() => handleDeleteCard(card.id)}
+                                            />
+                                        </div>
 
-                                <div className="card-top">
+                                        <div className="card-top">
 
-                                    <div className="top-left column">
-                                        <h3>{card.name + ", " + card.sys.country}</h3>
-                                        <p className={"time-para"}>{card.currentTime}</p>
-                                        <span className={"current-status"}>
+                                            <div className="top-left column">
+                                                <h3>{card.name + ", " + card.sys.country}</h3>
+                                                <p className={"time-para"}>{card.currentTime}</p>
+                                                <span className={"current-status"}>
                                               {/*<FontAwesomeIcon*/}
-                                              {/*    icon={faCloud}*/}
-                                              {/*    style={{color: "#fffff"}}*/}
-                                              {/*    size={"lg"}*/}
-                                              {/*/>*/}
+                                                    {/*    icon={faCloud}*/}
+                                                    {/*    style={{color: "#fffff"}}*/}
+                                                    {/*    size={"lg"}*/}
+                                                    {/*/>*/}
 
-                                            {card.weather && <img src={`https://openweathermap.org/img/wn/${card.weather[0].icon}.png`} alt=""/>}
-                                            {card.weather && <p>{card.weather[0].description}</p>}
+                                                    {card.weather && <img src={`https://openweathermap.org/img/wn/${card.weather[0].icon}.png`} alt=""/>}
+                                                    {card.weather && <p>{card.weather[0].description}</p>}
                                        </span>
-                                    </div>
-                                    <div className={"top-right column"}>
-                                        {card.main && (
-                                            <h3 className={"temp"}>{card.main.temp.toFixed() + "°C"}</h3>
-                                        )}
-                                        <div className={"min-max"}>
-                                            {card.main && (
-                                                <p>{"Temp Min: " + card.main.temp_min.toFixed() + "°C"}</p>
-                                            )}
-                                            {card.main && (
-                                                <p>{"Temp Max: " + card.main.temp_max.toFixed() + "°C"}</p>
-                                            )}
-                                        </div>
+                                            </div>
+                                            <div className={"top-right column"}>
+                                                {card.main && (
+                                                    <h3 className={"temp"}>{card.main.temp.toFixed() + "°C"}</h3>
+                                                )}
+                                                <div className={"min-max"}>
+                                                    {card.main && (
+                                                        <p>{"Temp Min: " + card.main.temp_min.toFixed() + "°C"}</p>
+                                                    )}
+                                                    {card.main && (
+                                                        <p>{"Temp Max: " + card.main.temp_max.toFixed() + "°C"}</p>
+                                                    )}
+                                                </div>
 
-                                    </div>
-                                </div>
-                                <div className={"card-bottom"}>
-                                    <div className="vertical-line"></div>
-                                    <div className={"card-bottom-left"}>
-                                        <div className={"conditions"}>
-                                            <span className={"condition-label"}>Pressure: </span>
-                                            {card.main && <span>{card.main.pressure}hPa</span>}
+                                            </div>
                                         </div>
-                                        <div className={"conditions"}>
-                                            <span className={"condition-label"}>Humidity: </span>
-                                            {card.main && <span>{card.main.humidity}%</span>}
-                                        </div>
-                                        <div className={"conditions"}>
-                                            <span className={"condition-label"}>Visibility: </span>
-                                            {card.visibility && (
-                                                <span>{card.visibility / 1000}km</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className={"card-bottom-middle"}>
-                                        <FontAwesomeIcon
-                                            className={"rocket-icon"}
-                                            icon={faPaperPlane}
-                                            style={{color: "#fffff"}}
-                                            size={"2x"}
-                                        />
-                                        <p>4.0m/s 120 Degree</p>
-                                    </div>
-                                    <div className="vertical-line-two"></div>
-                                    <div className={"card-bottom-right"}>
-                                        <div className={"conditions"}>
-                                            <span className={"condition-label"}>Sunrise: </span>
-                                            {card.sys && (
-                                                <span>
+                                        <div className={"card-bottom"}>
+                                            <div className="vertical-line"></div>
+                                            <div className={"card-bottom-left"}>
+                                                <div className={"conditions"}>
+                                                    <span className={"condition-label"}>Pressure: </span>
+                                                    {card.main && <span>{card.main.pressure}hPa</span>}
+                                                </div>
+                                                <div className={"conditions"}>
+                                                    <span className={"condition-label"}>Humidity: </span>
+                                                    {card.main && <span>{card.main.humidity}%</span>}
+                                                </div>
+                                                <div className={"conditions"}>
+                                                    <span className={"condition-label"}>Visibility: </span>
+                                                    {card.visibility && (
+                                                        <span>{card.visibility / 1000}km</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className={"card-bottom-middle"}>
+                                                <FontAwesomeIcon
+                                                    className={"rocket-icon"}
+                                                    icon={faPaperPlane}
+                                                    style={{color: "#fffff"}}
+                                                    size={"2x"}
+                                                />
+                                                <p>4.0m/s 120 Degree</p>
+                                            </div>
+                                            <div className="vertical-line-two"></div>
+                                            <div className={"card-bottom-right"}>
+                                                <div className={"conditions"}>
+                                                    <span className={"condition-label"}>Sunrise: </span>
+                                                    {card.sys && (
+                                                        <span>
                                                  {sunriseStatus(card.sys.sunrise, card.timezone)}
                                                 </span>
-                                            )}
-                                        </div>
-                                        <div className={"conditions"}>
-                                            <span className={"condition-label"}>Sunset : </span>
-                                            {card.sys && (
-                                                <span>
+                                                    )}
+                                                </div>
+                                                <div className={"conditions"}>
+                                                    <span className={"condition-label"}>Sunset : </span>
+                                                    {card.sys && (
+                                                        <span>
                                                   {sunsetStatus(card.sys.sunset, card.timezone)}
                                                 </span>
-                                            )}
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                </div>
+                        </div>
+                    </>
+                )}
+
+
             </section>
 
         </div>

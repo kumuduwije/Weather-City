@@ -28,6 +28,18 @@
     right:0;
 }
 
+.centered-circular{
+    margin:auto;
+    /*height: 200px;*/
+    width: fit-content;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    color:deeppink;
+}
+
 .centered-text {
     text-align: center;
     color: azure;
@@ -57,8 +69,11 @@
 }
 
 .card-close-btn .close-btn{
+    opacity: 0;
     color: lightgray;
 }
+
+
 
 .card-close-btn .close-btn:hover{
     cursor: pointer;
@@ -94,6 +109,10 @@
 .main-card:hover .card-bottom{
     /*transform: scale(1.05);*/
     box-shadow: 0 10px 20px rgba(0,0,0,.9), 0 4px 8px rgba(0,0,0,.04);
+}
+
+.main-card:hover .close-btn{
+    opacity: 1;
 }
 
 
