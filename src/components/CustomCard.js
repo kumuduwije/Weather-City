@@ -1,18 +1,23 @@
 import './CustomCard.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faXmark} from "@fortawesome/free-solid-svg-icons";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import InputBox from "./InputBox";
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Model from "./Model"
+
 
 
 function CustomCard() {
      // const [weatherData, setWeatherData] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [modelOpen, setModelOpen] = useState(false);
+
+    const [selectedCard, setSelectedCard] = React.useState(null);
 
     // state handle for weather data cards. Retrieve and load if their any locally saved data.
     const [weatherData, setWeatherData] = useState(() => {
@@ -67,6 +72,7 @@ function CustomCard() {
 
         }
     };
+
 
 
 
@@ -156,6 +162,22 @@ function CustomCard() {
         return sunriseTime.toLocaleTimeString("en-US", options);
     };
 
+    // const handleClick = () => {
+    //     setModelOpen(true);
+    //     console.log(modelOpen)
+    // };
+
+    const dataObject = (name, lon,lat) =>{
+       const obj = {
+           name:name,
+           lon:lon,
+           lat:lat
+       }
+
+       console.log(obj)
+        setSelectedCard(obj)
+    }
+
 
 
     return (
@@ -178,10 +200,13 @@ function CustomCard() {
 
 
                 {isLoading ? (
+
                     <CircularProgress className ={"centered-circular"} color="inherit" />
+
                 ) : (
                     <>
                         {weatherData.length === 0 && (
+
                             <div className="centered-container">
                                 {/*Add Title if there are no cards*/}
                                 <p className="centered-text">You haven't added any city yet. Add cities!</p>
@@ -191,12 +216,13 @@ function CustomCard() {
 
 
 
-                        <div className={"container"}>
+                        <div className={"container"} >
                             <div className={"cards"}>
                                 {weatherData.map((card, index) => (
-                                    <div key={index} className="main-card">
+
+                                    <div key={index} className="main-card" >
                                         <div className={"middle-visible-section"}>
-                                            <Button variant="outlined"  sx={{
+                                            <Button  onClick={() => {setModelOpen(true);dataObject(card.name,card.coord.lon,card.coord.lat)}}  variant="outlined" sx={{
                                                 '&:hover': {
                                                     backgroundColor: '#8d1f4f',
                                                     border: '1px solid',
@@ -208,7 +234,12 @@ function CustomCard() {
                                                 color: 'lightgray',
                                                 border: '2px solid lightgray',
                                                 textTransform:'uppercase'
-                                            }}>{card.name} ForeCast Info</Button>
+                                            }
+
+                                            }>{card.name} ForeCast Info</Button>
+
+                                            <Model open={modelOpen} setOpen={setModelOpen}  weatherData={weatherData} cardObj={selectedCard} />
+                                            {/*{console.log(selectedCardId)}*/}
                                         </div>
 
                                         <div className="card-close-btn">
@@ -300,8 +331,11 @@ function CustomCard() {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
+
                                 ))}
+
                             </div>
                         </div>
                     </>
@@ -311,6 +345,8 @@ function CustomCard() {
             </section>
 
         </div>
+
+
     );
 }
 

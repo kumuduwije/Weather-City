@@ -1,0 +1,27 @@
+.row{
+    display: flex;
+    color: #fff;
+    padding: 15px;
+    font-size: 20px;
+    font-family: Poppins, sans-serif;
+}
+
+.temp{margin-left: 20px;width: 60px}
+.month{margin-left: 20px;width: 100px}
+.date{margin-left: 25px;width: 150px;text-align: left}
+
+.weather-icon{
+    margin-left: 10px;
+}
+
+@media only screen and (max-width:455px) {
+
+    .row{
+        font-size: 15px;
+        padding: 10px;
+    }
+    .weather-icon{
+        margin-left: 0;
+    }
+}
+
