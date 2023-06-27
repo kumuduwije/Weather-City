@@ -4,16 +4,19 @@
 /*}*/
 .container{
 
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     display: flex;
-    flex-wrap: wrap;
+    position: relative;
+    /*flex-wrap: wrap;*/
     justify-content: center;
-    gap: 35px;
-    margin-left: 15%;
-    margin-right: 15%;
+    align-items: center;
+    /*gap: 35px;*/
+    /*margin-left: 15%;*/
+    /*margin-right: 15%;*/
     padding-bottom: 5%;
-    margin: unset;
-
+    /*margin: unset;*/
+    /*width: 1000px;*/
+    margin: 0 auto;
 }
 
 .centered-container {
@@ -68,16 +71,17 @@
 
 }
 
-.card-close-btn .close-btn{
-    opacity: 0;
+.close-btn{
     color: lightgray;
+    float: right;
+    text-align: right;
+    opacity: 0.8;
 }
 
-
-
-.card-close-btn .close-btn:hover{
+.close-btn:hover{
     cursor: pointer;
     color: azure;
+    opacity: 1;
 }
 
 
@@ -277,6 +281,9 @@
 
 
 @media (max-width: 969px) {
+    .container{
+        width: 100%;
+    }
     section{
         padding: 20px 0;
 
