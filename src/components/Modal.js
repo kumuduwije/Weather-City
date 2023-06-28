@@ -1,12 +1,28 @@
 import './Modal.css'
-import React from 'react';
-import { Modal, Box, Fade, Backdrop } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import { Modal, Box, Fade, Backdrop, Typography, Skeleton, Stack } from '@mui/material';
 import ForecastRow from './ForecastRow'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {  faXmark} from "@fortawesome/free-solid-svg-icons";
 
 
 const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentForecast, setCurrentForecast] = useState(null);
+
+    useEffect(() => {
+        setIsLoading(true); // Set loading to true every time the forecast prop changes
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+    }, [forecast]);
+
+    useEffect(() => {
+        if (!open) {
+            setIsLoading(true); // Reset the loading state when modal is closed
+        }
+    }, [open]);
 
     function getTimeFromDateTime(dateTimeString) {
         // Split the date and time parts
@@ -87,27 +103,19 @@ const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) =
         return daysOfWeek[dayOfWeek];
     }
 
-
-
-
     if (!open) return null;
 
     return (
-        <div>
+
 
             <Modal
 
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={() => {setOpen(false);}}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 closeAfterTransition
                 slots={{backdrop: Backdrop}}
-                // slotProps={{
-                //     backdrop: {
-                //         timeout: 500,
-                //     },
-                // }}
                 slotProps={{ backdrop: { timeout: 500 } }}
 
             >
@@ -124,11 +132,6 @@ const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) =
 
                             />
 
-
-                        {/*<Typography style={{fontFamily:'poppins',fontWeight:'bold'}} className={"heading"}  id="modal-modal-title" variant="h6" component="h2">*/}
-                        {/*    Weather Forecast in {cardObj.name}*/}
-                        {/*</Typography>*/}
-
                         <h1  className="heading"  id="modal-modal-title" >
                             Weather Forecast in {cardObj.name}
 
@@ -144,13 +147,40 @@ const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) =
                                 {
                                     forecast &&
                                     <>
-                                        <ForecastRow temp={forecast.list[7].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[7].dt_txt)} date={getCurrentDay(forecast.list[7].dt_txt)} icon={forecast.list[7].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[15].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[15].dt_txt)} date={getCurrentDay(forecast.list[15].dt_txt)} icon={forecast.list[15].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[25].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[25].dt_txt)} date={getCurrentDay(forecast.list[25].dt_txt)} icon={forecast.list[25].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[33].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[33].dt_txt)} date={getCurrentDay(forecast.list[33].dt_txt)} icon={forecast.list[33].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[39].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[39].dt_txt)} date={getCurrentDay(forecast.list[39].dt_txt)} icon={forecast.list[39].weather[0].icon}/>
+
+                                        {isLoading ? (
+                                            <>
+                                                <Stack direction='column' spacing={4.5} sx={{padding:'20px'}}>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave' />
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                </Stack>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <ForecastRow temp={forecast.list[7].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[7].dt_txt)} date={getCurrentDay(forecast.list[7].dt_txt)} icon={forecast.list[7].weather[0].icon}/>
+                                                {/* Rest of the ForecastRow components */}
+                                                <ForecastRow temp={forecast.list[15].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[15].dt_txt)} date={getCurrentDay(forecast.list[15].dt_txt)} icon={forecast.list[15].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[25].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[25].dt_txt)} date={getCurrentDay(forecast.list[25].dt_txt)} icon={forecast.list[25].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[33].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[33].dt_txt)} date={getCurrentDay(forecast.list[33].dt_txt)} icon={forecast.list[33].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[39].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[39].dt_txt)} date={getCurrentDay(forecast.list[39].dt_txt)} icon={forecast.list[39].weather[0].icon}/>
+                                            </>
+                                        )}
                                     </>
                                 }
+                                {/*<Skeleton variant="rectangular" width={300} height={30} />*/}
 
 
                             </Box>
@@ -161,11 +191,36 @@ const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) =
                                 </h1>
                                 {forecast &&
                                     <>
-                                        <ForecastRow temp={forecast.list[0].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[0].dt_txt)} date={capitalizeFirstLetter(forecast.list[0].weather[0].description)} icon={forecast.list[0].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[1].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[1].dt_txt)} date={capitalizeFirstLetter(forecast.list[1].weather[0].description)} icon={forecast.list[1].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[2].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[2].dt_txt)} date={capitalizeFirstLetter(forecast.list[2].weather[0].description)} icon={forecast.list[2].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[3].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[3].dt_txt)} date={capitalizeFirstLetter(forecast.list[3].weather[0].description)} icon={forecast.list[3].weather[0].icon}/>
-                                        <ForecastRow temp={forecast.list[4].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[4].dt_txt)} date={capitalizeFirstLetter(forecast.list[4].weather[0].description)} icon={forecast.list[4].weather[0].icon}/>
+                                        {isLoading ?
+                                            (<>
+                                                <Stack direction='column' spacing={4.5} sx={{padding:'20px'}}>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave' />
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                    <Box my={1}>
+                                                        <Skeleton variant="rectangular" width={330} height={30} animation='wave'/>
+                                                    </Box>
+                                                </Stack>
+
+                                            </>):
+
+                                            (<>
+                                                <ForecastRow temp={forecast.list[0].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[0].dt_txt)} date={capitalizeFirstLetter(forecast.list[0].weather[0].description)} icon={forecast.list[0].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[1].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[1].dt_txt)} date={capitalizeFirstLetter(forecast.list[1].weather[0].description)} icon={forecast.list[1].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[2].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[2].dt_txt)} date={capitalizeFirstLetter(forecast.list[2].weather[0].description)} icon={forecast.list[2].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[3].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[3].dt_txt)} date={capitalizeFirstLetter(forecast.list[3].weather[0].description)} icon={forecast.list[3].weather[0].icon}/>
+                                                <ForecastRow temp={forecast.list[4].main.temp.toFixed()} month={getTimeFromDateTime(forecast.list[4].dt_txt)} date={capitalizeFirstLetter(forecast.list[4].weather[0].description)} icon={forecast.list[4].weather[0].icon}/>
+                                            </>)}
+
                                     </>
                                     }
 
@@ -175,7 +230,6 @@ const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) =
                     </Box>
                 </Fade>
             </Modal>
-        </div>
     );
 };
 
