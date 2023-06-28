@@ -16,9 +16,9 @@
     background: linear-gradient(128deg, rgba(6,0,97,1) 30%, rgba(10,0,129,1) 50%, rgba(52,0,45,1) 99%);
     /*background: rgb(2,0,36);*/
     /*background: linear-gradient(161deg, rgba(2,0,36,1) 18%, rgba(9,9,121,1) 47%, rgba(51,7,29,1) 77%, rgba(15,1,4,1) 92%);*/
-    border: 2px;
+    /*border: 2px;*/
     border-radius: 10px;
-    /*box-shadow: 20;*/
+    /*box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.7);*/
     padding: 10px;
 }
 .heading{

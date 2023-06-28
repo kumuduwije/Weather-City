@@ -7,7 +7,7 @@ import InputBox from "./InputBox";
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Model from "./Model"
+import ModalComponent from "./Modal"
 
 
 
@@ -262,7 +262,7 @@ function CustomCard() {
 
                                             }>{card.name} ForeCast Info</Button>
 
-                                            <Model open={modelOpen} setOpen={setModelOpen}  weatherData={weatherData} cardObj={selectedCard} forecast={forecastData} />
+                                            <ModalComponent  open={modelOpen} setOpen={setModelOpen}  weatherData={weatherData} cardObj={selectedCard} forecast={forecastData} />
                                             {/*{console.log(selectedCardId)}*/}
                                         </div>
 

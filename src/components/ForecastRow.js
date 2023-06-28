@@ -1,7 +1,6 @@
 import React from "react";
 import './ForecastRow.css'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {  faCloud} from "@fortawesome/free-solid-svg-icons";
+
 
 
 

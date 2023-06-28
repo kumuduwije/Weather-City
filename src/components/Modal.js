@@ -1,12 +1,12 @@
-import './Model.css'
+import './Modal.css'
 import React from 'react';
-import {Modal, Box, Fade, Backdrop} from '@mui/material';
+import { Modal, Box, Fade, Backdrop } from '@mui/material';
 import ForecastRow from './ForecastRow'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {  faXmark} from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 
-const Model = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
+
+const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
 
     function getTimeFromDateTime(dateTimeString) {
         // Split the date and time parts
@@ -56,6 +56,38 @@ const Model = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
         return "";
     }
 
+    function getCurrentMonthAndDate(str) {
+        // Split the string by space to separate date and time
+        const parts = str.split(" ");
+
+        // Get the date part and split it by hyphen to separate year, month, and day
+        const dateParts = parts[0].split("-");
+
+        // Extract the day and month
+        const day = dateParts[2];
+        const month = new Date(Date.parse(parts[0])).toLocaleString('default', { month: 'long' });
+
+        // Return the formatted month and date
+        return `${day} ${month}`;
+    }
+
+    function getCurrentDay(str) {
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        // Get the date part from the string
+        const datePart = str.split(' ')[0];
+
+        // Create a Date object from the date part
+        const dateObj = new Date(datePart);
+
+        // Get the day of the week from the Date object
+        const dayOfWeek = dateObj.getDay();
+
+        // Return the day of the week
+        return daysOfWeek[dayOfWeek];
+    }
+
+
 
 
     if (!open) return null;
@@ -64,24 +96,25 @@ const Model = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
         <div>
 
             <Modal
+
                 open={open}
                 onClose={() => setOpen(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 closeAfterTransition
                 slots={{backdrop: Backdrop}}
-                slotProps={{
-                    backdrop: {
-                        timeout: 500,
-                    },
-                }}
+                // slotProps={{
+                //     backdrop: {
+                //         timeout: 500,
+                //     },
+                // }}
+                slotProps={{ backdrop: { timeout: 500 } }}
 
             >
 
                 <Fade in={open}>
 
-
-                    <Box className="main-modal"  >
+                    <Box  className="main-modal"  >
                             {/*<CloseIcon/>*/}
                             <FontAwesomeIcon
                                 icon={faXmark}
@@ -111,11 +144,11 @@ const Model = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
                                 {
                                     forecast &&
                                     <>
-                                        <ForecastRow temp={"17"} month={"27 June"} date={"Tuesday"} icon={forecast.list[0].weather[0].icon}/>
-                                        <ForecastRow temp={"22"} month={"28 June"} date={"Wednesday"} icon={forecast.list[0].weather[0].icon}/>
-                                        <ForecastRow temp={"16"} month={"29 June"} date={"Thursday"} icon={forecast.list[0].weather[0].icon}/>
-                                        <ForecastRow temp={"19"} month={"30 June"} date={"Friday"} icon={forecast.list[0].weather[0].icon}/>
-                                        <ForecastRow temp={"17"} month={"01 July"} date={"Saturday"} icon={forecast.list[0].weather[0].icon}/>
+                                        <ForecastRow temp={forecast.list[7].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[7].dt_txt)} date={getCurrentDay(forecast.list[7].dt_txt)} icon={forecast.list[7].weather[0].icon}/>
+                                        <ForecastRow temp={forecast.list[15].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[15].dt_txt)} date={getCurrentDay(forecast.list[15].dt_txt)} icon={forecast.list[15].weather[0].icon}/>
+                                        <ForecastRow temp={forecast.list[25].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[25].dt_txt)} date={getCurrentDay(forecast.list[25].dt_txt)} icon={forecast.list[25].weather[0].icon}/>
+                                        <ForecastRow temp={forecast.list[33].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[33].dt_txt)} date={getCurrentDay(forecast.list[33].dt_txt)} icon={forecast.list[33].weather[0].icon}/>
+                                        <ForecastRow temp={forecast.list[39].main.temp.toFixed()} month={getCurrentMonthAndDate(forecast.list[39].dt_txt)} date={getCurrentDay(forecast.list[39].dt_txt)} icon={forecast.list[39].weather[0].icon}/>
                                     </>
                                 }
 
@@ -146,7 +179,9 @@ const Model = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
     );
 };
 
-export default Model;
+export default ModalComponent;
 
 
 // https://openweathermap.org/forecast5 -- forecast link
+
+//Test API -> https://api.openweathermap.org/data/2.5/forecast?lat=6.9319&lon=79.8478&units=metric&appid=435d554fc7367b62ae141d9d2070d100
