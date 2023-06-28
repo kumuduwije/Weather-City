@@ -7,7 +7,7 @@ import InputBox from "./InputBox";
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Model from "./Model"
+import ModalComponent from "./Modal"
 
 
 
@@ -18,6 +18,7 @@ function CustomCard() {
     const [modelOpen, setModelOpen] = useState(false);
 
     const [selectedCard, setSelectedCard] = React.useState(null);
+    const[forecastData,setForecastData] = React.useState(null)
 
     // state handle for weather data cards. Retrieve and load if their any locally saved data.
     const [weatherData, setWeatherData] = useState(() => {
@@ -162,10 +163,21 @@ function CustomCard() {
         return sunriseTime.toLocaleTimeString("en-US", options);
     };
 
-    // const handleClick = () => {
-    //     setModelOpen(true);
-    //     console.log(modelOpen)
-    // };
+    // Forecast Information
+    // const [lat,setLat] = useState("")
+    // const [lon,setLon] = useState("")
+
+    // const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=435d554fc7367b62ae141d9d2070d100`
+
+    // const getForecastInfo = () =>{
+    //     axios.get(forecastURL)
+    //         .then((response) =>{
+    //             const fetchedForecastData = response.data;
+    //             console.log( fetchedForecastData)
+    //         }).catch((error) =>{
+    //         console.log("Error fetching forecast data:", error);
+    //     })
+    // }
 
     const dataObject = (name, lon,lat) =>{
        const obj = {
@@ -173,6 +185,16 @@ function CustomCard() {
            lon:lon,
            lat:lat
        }
+        const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${obj.lat}&lon=${obj.lon}&units=metric&appid=435d554fc7367b62ae141d9d2070d100`
+
+        axios.get(forecastURL)
+            .then((response) =>{
+                const fetchedForecastData = response.data;
+                setForecastData(fetchedForecastData)
+                console.log( fetchedForecastData)
+            }).catch((error) =>{
+            console.log("Error fetching forecast data:", error);
+        })
 
        console.log(obj)
         setSelectedCard(obj)
@@ -222,6 +244,8 @@ function CustomCard() {
 
                                     <div key={index} className="main-card" >
                                         <div className={"middle-visible-section"}>
+
+
                                             <Button  onClick={() => {setModelOpen(true);dataObject(card.name,card.coord.lon,card.coord.lat)}}  variant="outlined" sx={{
                                                 '&:hover': {
                                                     backgroundColor: '#8d1f4f',
@@ -238,7 +262,7 @@ function CustomCard() {
 
                                             }>{card.name} ForeCast Info</Button>
 
-                                            <Model open={modelOpen} setOpen={setModelOpen}  weatherData={weatherData} cardObj={selectedCard} />
+                                            <ModalComponent  open={modelOpen} setOpen={setModelOpen}  weatherData={weatherData} cardObj={selectedCard} forecast={forecastData} />
                                             {/*{console.log(selectedCardId)}*/}
                                         </div>
 

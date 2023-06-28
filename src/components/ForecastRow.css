@@ -1,17 +1,17 @@
 .row{
     display: flex;
     color: #fff;
-    padding: 15px;
+    padding: 10px;
     font-size: 20px;
     font-family: Poppins, sans-serif;
 }
 
-.temp{margin-left: 20px;width: 60px}
-.month{margin-left: 20px;width: 100px}
-.date{margin-left: 25px;width: 150px;text-align: left}
+.temp{margin-left: 20px;width: 60px; padding-top: 10px}
+.month{margin-left: 20px;width: 100px; padding-top: 10px}
+.date{margin-left: 25px;width: 170px;text-align: left; padding-top: 10px}
 
 .weather-icon{
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 @media only screen and (max-width:455px) {
