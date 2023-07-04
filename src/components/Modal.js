@@ -1,6 +1,6 @@
 import './Modal.css'
 import React, {useEffect, useState} from 'react';
-import { Modal, Box, Fade, Backdrop, Typography, Skeleton, Stack } from '@mui/material';
+import { Modal, Box, Fade, Backdrop, Skeleton, Stack } from '@mui/material';
 import ForecastRow from './ForecastRow'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {  faXmark} from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,7 @@ import {  faXmark} from "@fortawesome/free-solid-svg-icons";
 
 const ModalComponent = ({open, setOpen, weatherData, name, cardObj, forecast}) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [currentForecast, setCurrentForecast] = useState(null);
+    // const [currentForecast, setCurrentForecast] = useState(null);
 
     useEffect(() => {
         setIsLoading(true); // Set loading to true every time the forecast prop changes

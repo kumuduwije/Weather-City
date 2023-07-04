@@ -1,6 +1,6 @@
 import './App.css'
 import CustomCard from "./components/CustomCard";
-import InputBox from "./components/InputBox";
+// import InputBox from "./components/InputBox";
 
 
 function App() {

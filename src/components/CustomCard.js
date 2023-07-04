@@ -113,7 +113,7 @@ function CustomCard() {
     useEffect(() => {
         const interval = setInterval(updateTime, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, );
 
     const formatDate = (timezone) => {
         const timeZoneOffset = timezone;
