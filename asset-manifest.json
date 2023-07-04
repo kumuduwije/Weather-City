@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/Weather-City/static/css/main.90e4c92e.css",
-    "main.js": "/Weather-City/static/js/main.263b668e.js",
+    "main.js": "/Weather-City/static/js/main.a76f6581.js",
     "static/js/787.67542b87.chunk.js": "/Weather-City/static/js/787.67542b87.chunk.js",
     "static/media/snow-mountain.jpeg": "/Weather-City/static/media/snow-mountain.010054cce0f92502fc5b.jpeg",
     "index.html": "/Weather-City/index.html",
     "main.90e4c92e.css.map": "/Weather-City/static/css/main.90e4c92e.css.map",
-    "main.263b668e.js.map": "/Weather-City/static/js/main.263b668e.js.map",
+    "main.a76f6581.js.map": "/Weather-City/static/js/main.a76f6581.js.map",
     "787.67542b87.chunk.js.map": "/Weather-City/static/js/787.67542b87.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90e4c92e.css",
-    "static/js/main.263b668e.js"
+    "static/js/main.a76f6581.js"
   ]
 }
