@@ -40,12 +40,14 @@
 }
 
 .close-btn{
+    transition: transform .5s ease-in-out;
     padding:5px;
     float: right;
     color: azure;
 }
 .close-btn:hover{
     cursor: pointer;
+    transform: rotate(90deg);
 }
 
 
